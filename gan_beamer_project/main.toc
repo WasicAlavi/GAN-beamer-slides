@@ -1,0 +1,7 @@
+\beamer@sectionintoc {1}{Why We Need GANs}{3}{0}{1}
+\beamer@sectionintoc {2}{Main Idea of GAN}{5}{0}{2}
+\beamer@sectionintoc {3}{Structure of GAN}{6}{0}{3}
+\beamer@sectionintoc {4}{How Training Works}{8}{0}{4}
+\beamer@sectionintoc {5}{Advantages and Limitations}{10}{0}{5}
+\beamer@sectionintoc {6}{Applications}{12}{0}{6}
+\beamer@sectionintoc {7}{Variants}{13}{0}{7}

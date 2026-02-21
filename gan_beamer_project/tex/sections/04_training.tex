@@ -1,0 +1,15 @@
+\section{How Training Works}
+
+\begin{frame}{Training Procedure}
+\begin{enumerate}
+\item Train discriminator on real and fake data.
+\item Train generator to fool discriminator.
+\item Repeat until convergence.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Minimax Objective}
+\[
+\min_G \max_D V(D,G)
+\]
+\end{frame}

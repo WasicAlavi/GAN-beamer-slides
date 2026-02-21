@@ -1,0 +1,36 @@
+\section{Structure of GAN}
+
+\begin{frame}{Generator and Discriminator}
+\begin{block}{Generator}
+Input: random noise \\
+Output: synthetic data
+\end{block}
+
+\begin{block}{Discriminator}
+Input: real or fake sample \\
+Output: probability of being real
+\end{block}
+\end{frame}
+
+\begin{frame}{GAN Architecture Diagram}
+\centering
+\begin{tikzpicture}[node distance=1.5cm,
+  block/.style={draw, rounded corners, align=center, minimum width=2.5cm},
+  arrow/.style={-{Stealth[length=2.5mm]}, thick}
+]
+
+\node[block] (noise) {Noise $z$};
+\node[block, right=of noise] (gen) {Generator};
+\node[block, right=of gen] (fake) {Fake Sample};
+\node[block, below=of fake] (real) {Real Data};
+\node[block, right=2cm of fake] (disc) {Discriminator};
+\node[block, right=of disc] (out) {Real / Fake};
+
+\draw[arrow] (noise) -- (gen);
+\draw[arrow] (gen) -- (fake);
+\draw[arrow] (fake) -- (disc);
+\draw[arrow] (real) -- (disc);
+\draw[arrow] (disc) -- (out);
+
+\end{tikzpicture}
+\end{frame}
