@@ -1,36 +1,41 @@
-\section{Structure of GAN}
+% % ============================================================
+% %  Section 2: Generative vs. Discriminative
+% % ============================================================
+% \section{Generative vs.\ Discriminative}
+% % ── Colour guard (safe duplicate – only defines if not yet set) ──────────────
+% \providecolor{cream}{RGB}{250,248,240}
+% \providecolor{crimson}{RGB}{139,26,26}
+% \providecolor{darkfoot}{RGB}{60,60,60}
+% \providecolor{lightcrimson}{RGB}{200,60,60}
+% \providecolor{blockbg}{RGB}{242,236,224}
 
-\begin{frame}{Generator and Discriminator}
-\begin{block}{Generator}
-Input: random noise \\
-Output: synthetic data
-\end{block}
 
-\begin{block}{Discriminator}
-Input: real or fake sample \\
-Output: probability of being real
-\end{block}
-\end{frame}
+% \begin{frame}{Two Kinds of Statistical Models}
+% \begin{columns}[T,onlytextwidth]
+%   \begin{column}{0.5\textwidth}
+%     \begin{block}{Generative models}
+%       \begin{itemize}\setlength\itemsep{0.4em}
+%         \item Model joint probability $p(X,Y)$ or just $p(X)$.
+%         \item \textbf{Can sample new instances.}
+%         \item Example: generate new animal photos.
+%       \end{itemize}
+%     \end{block}
+%   \end{column}
+%   \begin{column}{0.5\textwidth}
+%     \begin{block}{Discriminative models}
+%       \begin{itemize}\setlength\itemsep{0.4em}
+%         \item Model conditional probability $p(Y \mid X)$.
+%         \item Predict labels; ignore how likely $X$ is.
+%         \item Example: classify dog vs.\ cat.
+%       \end{itemize}
+%     \end{block}
+%   \end{column}
+% \end{columns}
 
-\begin{frame}{GAN Architecture Diagram}
-\centering
-\begin{tikzpicture}[node distance=1.5cm,
-  block/.style={draw, rounded corners, align=center, minimum width=2.5cm},
-  arrow/.style={-{Stealth[length=2.5mm]}, thick}
-]
-
-\node[block] (noise) {Noise $z$};
-\node[block, right=of noise] (gen) {Generator};
-\node[block, right=of gen] (fake) {Fake Sample};
-\node[block, below=of fake] (real) {Real Data};
-\node[block, right=2cm of fake] (disc) {Discriminator};
-\node[block, right=of disc] (out) {Real / Fake};
-
-\draw[arrow] (noise) -- (gen);
-\draw[arrow] (gen) -- (fake);
-\draw[arrow] (fake) -- (disc);
-\draw[arrow] (real) -- (disc);
-\draw[arrow] (disc) -- (out);
-
-\end{tikzpicture}
-\end{frame}
+% \vspace{0.7em}
+% \begin{alertblock}{GANs as generative models}
+%   A model can match a distribution \textbf{without} outputting probabilities ---
+%   by imitating the data so well that it becomes indistinguishable from reality.
+%   GANs exploit this idea directly.
+% \end{alertblock}
+% \end{frame}

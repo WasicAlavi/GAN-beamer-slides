@@ -1,13 +1,89 @@
-\usetheme{Madrid}
-\usecolortheme{default}
+% --- Theme (styled to match the provided example deck) ---
+\usetheme{default}
 \usefonttheme{professionalfonts}
 
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath, amsfonts}
 \usepackage{graphicx}
 \usepackage{tikz}
-\usepackage{animate}
 
+\usetikzlibrary{positioning, arrows.meta, shapes.geometric, shadows}
+
+% Assets
 \graphicspath{{assets/images/}{assets/figures/}}
 
-\usetikzlibrary{positioning, arrows.meta, shapes.geometric}
+% --- Colors (blue + orange accent) ---
+\definecolor{Primary}{RGB}{23,105,148}
+\definecolor{PrimaryDark}{RGB}{16,83,120}
+\definecolor{Accent}{RGB}{232,126,44}
+\definecolor{SlideBg}{RGB}{245,247,250}
+
+\setbeamercolor{background canvas}{bg=SlideBg}
+
+% Title bar
+\setbeamercolor{frametitle}{bg=Primary, fg=white}
+\setbeamerfont{frametitle}{series=\bfseries, size=\Large}
+\setbeamertemplate{frametitle}{
+  \nointerlineskip
+  \begin{beamercolorbox}[wd=\paperwidth, ht=3.0ex, dp=1.2ex, leftskip=1.0em]{frametitle}
+    \usebeamerfont{frametitle}\insertframetitle
+  \end{beamercolorbox}
+}
+
+% Blocks (rounded + shadow, like the sample deck)
+\setbeamertemplate{blocks}[rounded][shadow=true]
+\setbeamercolor{block title}{bg=Primary, fg=white}
+\setbeamercolor{block body}{bg=Primary!10, fg=black}
+\setbeamercolor{block title alerted}{bg=Accent, fg=white}
+\setbeamercolor{block body alerted}{bg=Accent!10, fg=black}
+
+% Itemize bullets
+\setbeamercolor{itemize item}{fg=Primary}
+\setbeamercolor{itemize subitem}{fg=Primary}
+
+% Footline (3-part bar)
+\setbeamertemplate{navigation symbols}{}
+\setbeamercolor{author in head/foot}{bg=PrimaryDark, fg=white}
+\setbeamercolor{title in head/foot}{bg=Primary, fg=white}
+\setbeamercolor{date in head/foot}{bg=PrimaryDark, fg=white}
+
+\setbeamertemplate{footline}{
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=.45\paperwidth, ht=2.6ex, dp=1.1ex, left]{author in head/foot}
+      \hspace*{1em}\insertshortauthor
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.45\paperwidth, ht=2.6ex, dp=1.1ex, center]{title in head/foot}
+      \insertshorttitle
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.10\paperwidth, ht=2.6ex, dp=1.1ex, right]{date in head/foot}
+      \insertframenumber/\inserttotalframenumber\hspace*{1em}
+    \end{beamercolorbox}%
+  }%
+}
+
+% Custom title page: blue rounded header with shadow
+\setbeamertemplate{title page}{
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[
+      fill=Primary,
+      rounded corners=8pt,
+      drop shadow,
+      text=white,
+      align=center,
+      text width=0.86\paperwidth,
+      minimum height=1.55cm
+    ] at ([yshift=-1.15cm]current page.north) {
+      {\Large\bfseries \inserttitle}\\[-1pt]
+      {\normalsize \insertsubtitle}
+    };
+  \end{tikzpicture}
+
+  \vspace*{2.35cm}
+  \centering
+  {\Large\bfseries \insertauthor\par}
+  \vspace{0.35cm}
+  {\large \insertinstitute\par}
+  \vspace{0.35cm}
+  {\large \insertdate\par}
+}

@@ -1,0 +1,210 @@
+% ============================================================
+%  Generative Adversarial Networks – Beamer Presentation
+%  Compile: pdflatex main.tex  (run twice for TOC & labels)
+%
+%  Folder structure expected:
+%    main.tex                 <- this file (fully self-contained)
+%    sections/
+%      01_introduction.tex
+%      02_gen_vs_disc.tex
+%      03_structure.tex
+%      04_training.tex
+%      05_loss_failures.tex
+%      06_variants_apps.tex
+%      07_conclusion.tex
+%    images/                  <- drop your .png files here when ready
+% ============================================================
+\documentclass[aspectratio=169,12pt]{beamer}
+
+% -- Packages ------------------------------------------------------------------
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage[T1]{fontenc}
+\usepackage[most]{tcolorbox}
+% -- Image path ----------------------------------------------------------------
+\graphicspath{{images/}}
+
+% -- Colour palette ------------------------------------------------------------
+\definecolor{cream}{RGB}{250,248,240}
+\definecolor{crimson}{RGB}{139,26,26}
+\definecolor{darkfoot}{RGB}{60,60,60}
+\definecolor{lightcrimson}{RGB}{200,60,60}
+\definecolor{blockbg}{RGB}{242,236,224}
+
+% -- Base theme ----------------------------------------------------------------
+\usetheme{default}
+\usecolortheme{default}
+\usefonttheme{serif}
+\hypersetup{colorlinks=true,linkcolor=crimson,urlcolor=crimson,citecolor=crimson}
+
+% -- Background ----------------------------------------------------------------
+\setbeamercolor{background canvas}{bg=cream}
+
+% -- Frame title ---------------------------------------------------------------
+\setbeamercolor{frametitle}{fg=crimson,bg=cream}
+\setbeamerfont{frametitle}{series=\bfseries,size=\large}
+
+% -- Title page elements -------------------------------------------------------
+\setbeamercolor{title}{fg=crimson}
+\setbeamercolor{subtitle}{fg=darkfoot}
+\setbeamerfont{title}{series=\bfseries,size=\LARGE}
+\setbeamerfont{subtitle}{size=\normalsize}
+\setbeamerfont{author}{size=\normalsize}
+\setbeamerfont{institute}{size=\small}
+\setbeamerfont{date}{size=\small}
+
+% -- Body text -----------------------------------------------------------------
+\setbeamercolor{normal text}{fg=black!85}
+\setbeamercolor{item}{fg=crimson}
+\setbeamercolor{subitem}{fg=lightcrimson}
+
+% -- Blocks --------------------------------------------------------------------
+\setbeamercolor{block title}{fg=white,bg=crimson}
+\setbeamercolor{block body}{fg=black!85,bg=blockbg}
+\setbeamerfont{block title}{series=\bfseries,size=\small}
+\setbeamercolor{alertblock title}{fg=white,bg=darkfoot}
+\setbeamercolor{alertblock body}{fg=black!85,bg=blockbg}
+
+% -- Footer --------------------------------------------------------------------
+\setbeamertemplate{navigation symbols}{}
+
+\setbeamertemplate{footline}{%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.5ex,dp=1ex]{footline}%
+    \begin{tikzpicture}[overlay,remember picture]
+      \fill[darkfoot] (0,0) rectangle (\paperwidth,3.5ex);
+      \fill[crimson] (\paperwidth-2.5cm,0) rectangle (\paperwidth,3.5ex);
+      \node[anchor=west,text=white,font=\tiny] at (0.2cm,1.6ex)
+            {\insertshortauthor};
+      \node[anchor=center,text=white,font=\tiny] at (0.5\paperwidth,1.6ex)
+            {\insertshorttitle\ifx\insertsection\empty\else{}
+             $\bullet$ \insertsection\fi};
+      \node[anchor=east,text=white,font=\tiny\bfseries]
+            at (\paperwidth-0.15cm,1.6ex)
+            {Page \insertframenumber\ / \inserttotalframenumber};
+    \end{tikzpicture}%
+  \end{beamercolorbox}%
+}
+
+% -- Section divider slide -----------------------------------------------------
+% \AtBeginSection[]{
+%   \begin{frame}[plain]
+%     \begin{tikzpicture}[overlay,remember picture]
+%       \fill[cream] (current page.south west)
+%                    rectangle (current page.north east);
+%       \node[anchor=west,text=crimson,
+%             font=\fontsize{72}{72}\selectfont\bfseries,inner sep=0]
+%             at ([xshift=1.2cm]current page.west) {\thesection.};
+%       \node[anchor=west,text=crimson,font=\Large\bfseries,inner sep=0]
+%             at ([xshift=4.2cm]current page.west) {\insertsectionhead};
+%     \end{tikzpicture}
+%   \end{frame}
+% }
+
+% -- TOC colours ---------------------------------------------------------------
+\setbeamercolor{section in toc}{fg=crimson}
+\setbeamercolor{subsection in toc}{fg=lightcrimson}
+
+% -- Frame title with thin crimson rule ----------------------------------------
+\setbeamertemplate{frametitle}{%
+  \vskip0.3em
+  {\usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}\insertframetitle}%
+  \vskip-0.15em
+  {\color{crimson}\rule{0.12\textwidth}{0.5pt}}%
+  \vskip0.3em
+}
+
+% -- Bullet shapes -------------------------------------------------------------
+\setbeamertemplate{itemize item}{\color{crimson}\textbullet}
+\setbeamertemplate{itemize subitem}{\color{lightcrimson}$\circ$}
+\setbeamertemplate{enumerate item}{\color{crimson}\insertenumlabel.}
+
+% -- Metadata ------------------------------------------------------------------
+\title[Generative Adversarial Networks]{Generative Adversarial Networks}
+\subtitle{An Introduction to GANs}
+\author[Your Name]{Your Name}
+\institute{Department of Computer Science \\ Your University}
+\date{\today}
+
+% =============================================================================
+\begin{document}
+% =============================================================================
+% -- Title slide (professional, no image) --------------------------------------
+% -- Title slide (clean single-panel professional overview) --------------------
+% -- Title slide (clean academic layout with 3 students) -----------------------
+% -- Title slide (balanced layout with 3-column students) ----------------------
+\begin{frame}[plain]
+\begin{tikzpicture}[overlay,remember picture]
+
+  % Full background
+  \fill[cream] (current page.south west)
+               rectangle (current page.north east);
+
+  % Top accent line
+  \draw[crimson,line width=3pt]
+        (current page.north west) -- (current page.north east);
+
+\end{tikzpicture}
+
+\vspace{1.6cm}
+
+\begin{center}
+
+{\color{crimson}\LARGE\bfseries Generative Adversarial Networks}
+
+\vspace{0.6cm}
+
+{\color{darkfoot}\large An Overview}
+
+\vspace{0.2cm}
+{\color{crimson}\rule{6.5cm}{0.8pt}}
+
+\vspace{1cm}
+
+% --- Students in 3 columns ---
+\begin{columns}[T,totalwidth=0.9\textwidth]
+\column{0.33\textwidth}
+\centering
+\textbf{Student Name 1} \\ 
+{\small ID: 2205105}
+
+\column{0.33\textwidth}
+\centering
+\textbf{Student Name 2} \\ 
+{\small ID: 2205106}
+
+\column{0.33\textwidth}
+\centering
+\textbf{Student Name 3} \\ 
+{\small ID: 2205108}
+\end{columns}
+
+
+\vspace{1.3cm}
+
+{\small \today}
+
+\end{center}
+
+\end{frame}
+
+
+
+% -- Outline -------------------------------------------------------------------
+% \begin{frame}{Outline}
+%   \tableofcontents
+% \end{frame}
+
+% -- Sections ------------------------------------------------------------------
+\input{sections/01_introduction}
+\input{sections/02_gen_vs_disc}
+\input{sections/03_structure}
+\input{sections/04_training}
+\input{sections/05_loss_failures}
+\input{sections/06_variants_apps}
+\input{sections/07_conclusion}
+
+% =============================================================================
+\end{document}

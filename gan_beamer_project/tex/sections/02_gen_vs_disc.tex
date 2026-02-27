@@ -1,0 +1,202 @@
+% ============================================================
+%  Section 3: GAN Structure
+% ============================================================
+\section{GAN Structure}
+% ── Colour guard (safe duplicate – only defines if not yet set) ──────────────
+\providecolor{cream}{RGB}{250,248,240}
+\providecolor{crimson}{RGB}{139,26,26}
+\providecolor{darkfoot}{RGB}{60,60,60}
+\providecolor{lightcrimson}{RGB}{200,60,60}
+\providecolor{blockbg}{RGB}{242,236,224}
+
+
+% ── Slide 1: Overview ──────────────────────────────────────────────────────
+\begin{frame}{Two Players: Generator \& Discriminator}
+
+% --- Definition box on top ---
+\begin{block}{Structure}
+A \textbf{Generative Adversarial Network (GAN)} consists of two neural networks trained together:
+a \textbf{Generator} $G$ that creates synthetic samples, and a \textbf{Discriminator} $D$ that
+distinguishes real samples from fake ones.
+\end{block}
+
+\vspace{0.2em}
+
+% --- Side-by-side boxes: Generator and Discriminator ---
+\begin{columns}[T,onlytextwidth]
+  \begin{column}{0.5\textwidth}
+    \begin{tcolorbox}[title=Generator $G$, equal height group=A, colback=blockbg]
+      \begin{itemize}\itemsep0.45em
+        \item \textbf{Input:} random noise $z$
+        \item \textbf{Output:} synthetic sample $G(z)$
+        \item \textbf{Goal:} fool $D$
+      \end{itemize}
+    \end{tcolorbox}
+  \end{column}
+  \begin{column}{0.5\textwidth}
+    \begin{tcolorbox}[title=Discriminator $D$, equal height group=A, colback=blockbg]
+      \begin{itemize}\itemsep0.45em
+        \item \textbf{Input:} real $x$ or fake $G(z)$
+        \item \textbf{Output:} real/fake score
+        \item \textbf{Goal:} catch fakes
+      \end{itemize}
+    \end{tcolorbox}
+  \end{column}
+\end{columns}
+\end{frame}
+
+% ── Slide 1: Early Training ────────────────────────────────────────────────
+\begin{frame}{Training Intuition: Early Stage}
+\centering
+\includegraphics[width=\linewidth,height=0.8\textheight,keepaspectratio]{bad_gan}
+
+\vspace{1.3em}
+
+\begin{itemize}
+  \item Generator produces obvious fakes; discriminator easily detects them.
+\end{itemize}
+
+\end{frame}
+
+
+% ── Slide 2: Mid Training ──────────────────────────────────────────────────
+\begin{frame}{Training Intuition: Mid Stage}
+\centering
+\includegraphics[width=\linewidth,height=0.8\textheight,keepaspectratio]{ok_gan}
+
+\vspace{1.3em}
+
+\begin{itemize}
+  \item Generator improves and begins to fool the discriminator.
+\end{itemize}
+
+\end{frame}
+
+
+% ── Slide 3: Late Training ─────────────────────────────────────────────────
+\begin{frame}{Training Intuition: Late Stage}
+\centering
+\includegraphics[width=\linewidth,height=0.8\textheight,keepaspectratio]{good_gan}
+
+\vspace{1.3em}
+
+\begin{itemize}
+  \item Discriminator struggles to distinguish real from fake; accuracy drops.
+\end{itemize}
+
+\end{frame}
+
+%------------ whole system
+\begin{frame}{GAN Architecture: Full System Overview}
+
+\centering
+\includegraphics[width=\linewidth,height=0.8\textheight,keepaspectratio]{gan_diagram}
+\end{frame}
+
+% ── Slide 2: Discriminator Deep-Dive ───────────────────────────────────────
+\begin{frame}{The Discriminator in a GAN}
+\small
+
+\begin{block}{What is the Discriminator?}
+The discriminator $D$ is a \textbf{classifier} that learns to distinguish:
+\begin{itemize}
+    \item Real data from the dataset
+    \item Fake data produced by $G$
+    \item $D$ can use any suitable architecture (e.g., CNN for images)
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}{Discriminator Training}
+\small
+
+\begin{block}{Training Data \& Update Process}
+\begin{columns}[T,onlytextwidth]
+
+\begin{column}{0.48\textwidth}
+\textbf{Training Data}
+\begin{itemize}
+    \item Real samples → positive
+    \item $G(z)$ → negative
+\end{itemize}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+\textbf{Update Step}
+\begin{itemize}
+    \item Classify real \& fake
+    \item Compute loss
+    \item Update \textbf{only $D$}
+\end{itemize}
+\end{column}
+
+\end{columns}
+\end{block}
+
+\end{frame}
+
+
+
+\begin{frame}{Discriminator Training: Backpropagation}
+
+\centering
+\includegraphics[width=0.9\linewidth,height=0.8\textheight,keepaspectratio]{gan_diagram_discriminator}
+
+\end{frame}
+
+
+
+% ── Slide 3: Generator Deep-Dive ───────────────────────────────────────────
+\begin{frame}{The Generator in a GAN}
+\small
+
+\begin{block}{What is the Generator?}
+The generator $G$ creates \textbf{synthetic data} by transforming
+random noise $z$ into an output $G(z)$.
+
+\begin{itemize}
+    \item Learns to make fake data look real
+    \item Tries to fool the discriminator $D$
+    \item Uses noise to produce diverse outputs
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+\begin{frame}{Generator Training}
+\small
+
+\begin{block}{Training \& Update Process}
+\begin{columns}[T,onlytextwidth]
+
+\begin{column}{0.48\textwidth}
+\textbf{Training Steps}
+\begin{itemize}
+    \item Sample random noise $z$
+    \item Compute fake sample $G(z)$
+    \item Get $D(G(z))$ classification
+\end{itemize}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+\textbf{Update Step}
+\begin{itemize}
+    \item Compute generator loss
+    \item Backpropagate through $D \rightarrow G$
+    \item Update \textbf{only $G$}
+\end{itemize}
+\end{column}
+
+\end{columns}
+\end{block}
+
+\end{frame}
+
+\begin{frame}{Generator Training: Backpropagation}
+
+\centering
+\includegraphics[width=0.9\linewidth,height=0.8\textheight,keepaspectratio]{gan_diagram_generator}
+
+\end{frame}
+

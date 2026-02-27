@@ -1,0 +1,42 @@
+% ============================================================
+%  Section 1: Introduction
+%  NOTE: This file is meant to be \input-ed by main.tex.
+%        Do NOT compile it directly — compile main.tex instead.
+% ── Colour guard (safe duplicate – only defines if not yet set) ──────────────
+\providecolor{cream}{RGB}{250,248,240}
+\providecolor{crimson}{RGB}{139,26,26}
+\providecolor{darkfoot}{RGB}{60,60,60}
+\providecolor{lightcrimson}{RGB}{200,60,60}
+\providecolor{blockbg}{RGB}{242,236,224}
+
+% ============================================================
+\section{Introduction}
+\begin{frame}{What is a GAN?}
+
+% --- Definition ---
+\begin{block}{Intuition}
+\textbf{Generative Adversarial Networks (GANs)} are generative models that 
+learn to create new data instances resembling the training data.
+\end{block}
+
+\vspace{0.3em}
+
+% --- Key Points ---
+\begin{itemize}\setlength\itemsep{0.25em}
+  \item Generate realistic \textbf{images, audio, video}, etc.
+\end{itemize}
+
+\vfill
+
+% --- Image ---
+\begin{center}
+\begin{figure}
+\centering
+\includegraphics[width=0.75\linewidth, trim=0 6cm 0 6cm, clip]{gan_faces}
+\vspace{-0.3cm} % Adjust this value (e.g., -0.2cm to pull it closer)
+\caption{GAN-generated human faces}
+\label{fig:gan_faces}
+\end{figure}
+\end{center}
+
+\end{frame}

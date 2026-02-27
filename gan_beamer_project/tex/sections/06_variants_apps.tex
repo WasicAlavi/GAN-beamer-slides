@@ -1,0 +1,162 @@
+% ============================================================
+%  Section 6: Variants & Applications
+% ============================================================
+\section{Variants \& Applications}
+% ── Colour guard (safe duplicate – only defines if not yet set) ──────────────
+\providecolor{cream}{RGB}{250,248,240}
+\providecolor{crimson}{RGB}{139,26,26}
+\providecolor{darkfoot}{RGB}{60,60,60}
+\providecolor{lightcrimson}{RGB}{200,60,60}
+\providecolor{blockbg}{RGB}{242,236,224}
+
+
+% ── Slide 1: Notable variants ──────────────────────────────────────────────
+\begin{frame}{Notable GAN Variants}
+
+\small
+
+\begin{block}{Common GAN Variations}
+
+\begin{itemize}\setlength\itemsep{0.8em}
+
+    \item \textbf{Progressive GAN} --- 
+    progressively increases image resolution during training 
+    for faster convergence and higher quality outputs.
+
+    \item \textbf{Conditional GAN (cGAN)} --- 
+    generates samples conditioned on labels; models $p(X \mid Y)$.
+
+    \item \textbf{CycleGAN} --- 
+    performs unpaired image-to-image translation using cycle consistency.
+
+\end{itemize}
+
+\end{block}
+
+\end{frame}
+
+% ── Slide 2: Applications ──────────────────────────────────────────────────
+\begin{frame}{Demo: Training a Pix2Pix GAN}
+    \centering
+    \textbf{\Large Dataset Overview}
+    \vspace{0.8em}
+
+    % Optional: Use columns for better visual balance if you have an image
+    \begin{columns}[c]
+        \begin{column}{0.5\textwidth}
+            \centering
+            %\includegraphics[width=\linewidth]{dataset_example.png}
+            \small \textit{(Image: Input vs. Target Pair)}
+        \end{column}
+        
+        \begin{column}{0.5\textwidth}
+            \small
+            Each training image is a side-by-side pair:
+            \begin{itemize}
+                \item \textbf{Left half:} Input image
+                \item \textbf{Right half:} Target image
+            \end{itemize}
+            
+            \vspace{0.5em}
+            \textbf{Preprocessing Details:}
+            \begin{itemize}
+                \item Resized to: $256 \times 256$
+                \item Range: Normalized to $[-1, 1]$
+            \end{itemize}
+        \end{column}
+    \end{columns}
+
+    \vspace{1em}
+    \hrule
+    \vspace{0.5em}
+    \footnotesize
+    \textcolor{gray}{Note: Pix2Pix requires pixel-level alignment between pairs.}
+\end{frame}
+
+
+\begin{frame}{Pix2Pix Architecture}
+
+\begin{columns}[t]
+    % Left Column: Generator
+    \begin{column}{0.48\textwidth}
+        \textbf{\small Generator: U-Net}
+        \begin{itemize}
+            \item \footnotesize \textbf{Structure:} Encoder--decoder with skip connections to preserve spatial detail.
+            \item \footnotesize \textbf{Bottleneck:} Captures high-level features.
+            \item \footnotesize \textbf{Activation:} \texttt{tanh} output layer for $[-1, 1]$ range.
+        \end{itemize}
+    \end{column}
+
+    % Right Column: Discriminator
+    \begin{column}{0.48\textwidth}
+        \textbf{\small Discriminator: PatchGAN}
+        \begin{itemize}
+            \item \footnotesize \textbf{Local Focus:} Classifies $N \times N$ patches rather than the full image.
+            \item \footnotesize \textbf{Output:} A probability map (Real vs. Fake).
+            \item \footnotesize \textbf{Benefit:} Reduces blurring by penalizing high-frequency errors.
+        \end{itemize}
+    \end{column}
+\end{columns}
+
+\vspace{1.5em}
+\centering
+\hrule
+\vspace{1em}
+
+\textbf{\small Objective Function}
+\vspace{0.5em}
+
+\[
+G^* = \arg \min_G \max_D \mathcal{L}_{cGAN}(G, D) + \lambda \mathcal{L}_{L1}(G)
+\]
+
+\vspace{0.5em}
+\begin{quote}
+    \footnotesize
+    \textbf{Loss Breakdown:} The Adversarial loss ensures visual realism, while the $L1$ reconstruction loss ensures the output is a near-exact match to the ground truth.
+\end{quote}
+
+\end{frame}
+
+\begin{frame}{Training Strategy}
+\small
+
+\begin{columns}[T]
+    % Left column: Optimizer + Epochs (as a block)
+    \begin{column}{0.48\textwidth}
+        \begin{block}{Optimizer}
+            \begin{itemize}
+                \item Adam
+                \item Learning rate: $2 \times 10^{-4}$
+                \item $\beta_1$: 0.5
+                \item \textbf{Total Epochs:} 100
+            \end{itemize}
+        \end{block}
+    \end{column}
+
+    % Right column: Training setup (as a block)
+    \begin{column}{0.48\textwidth}
+        \begin{block}{Training Setup}
+            \begin{itemize}
+                \item Batch size: 1
+                \item Alternating $D$ and $G$ updates
+                \item Fixed validation image for tracking
+                \item Snapshot saved every epoch
+            \end{itemize}
+        \end{block}
+    \end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}{Generator Progress Over Epochs}
+\centering
+
+\only<1>{\includegraphics[width=0.9\linewidth,height=0.75\textheight,keepaspectratio]{epoch_0000}}
+\only<2>{\includegraphics[width=0.9\linewidth,height=0.75\textheight,keepaspectratio]{50}}
+\only<3>{\includegraphics[width=0.9\linewidth,height=0.75\textheight,keepaspectratio]{100}}
+
+\vspace{0.5em}
+\small Fixed validation input $\rightarrow$ Output evolution across epochs
+
+\end{frame}

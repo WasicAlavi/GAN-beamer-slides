@@ -1,15 +1,88 @@
-\section{How Training Works}
+% ============================================================
+%  Section 4: Training
+% ============================================================
+\section{Training}
+% ── Colour guard (safe duplicate – only defines if not yet set) ──────────────
+\providecolor{cream}{RGB}{250,248,240}
+\providecolor{crimson}{RGB}{139,26,26}
+\providecolor{darkfoot}{RGB}{60,60,60}
+\providecolor{lightcrimson}{RGB}{200,60,60}
+\providecolor{blockbg}{RGB}{242,236,224}
 
-\begin{frame}{Training Procedure}
-\begin{enumerate}
-\item Train discriminator on real and fake data.
-\item Train generator to fool discriminator.
-\item Repeat until convergence.
+
+\begin{frame}{Complications in GAN Training}
+\small
+
+\begin{block}{Why is GAN training difficult?}
+Because a GAN contains \textbf{two separately trained networks},
+its training must address two main complications:
+\end{block}
+
+\vspace{0.6em}
+
+\begin{itemize}
+    \item GANs must juggle two different training processes:
+          \textbf{Generator} and \textbf{Discriminator}.
+    \item GAN convergence is difficult to identify and unstable.
+\end{itemize}
+
+\vspace{0.6em}
+
+\begin{alertblock}{Core challenge}
+We are not optimizing one model — we are optimizing a
+\textbf{two-player game}.
+\end{alertblock}
+
+\end{frame}
+
+\begin{frame}{Alternating Training}
+
+\small
+
+\begin{block}{How GAN Training Works}
+\begin{enumerate}\setlength\itemsep{0.6em}
+    \item Train \textbf{Discriminator} (keep $G$ frozen)
+    \item Train \textbf{Generator} (keep $D$ frozen)
+    \item Repeat
 \end{enumerate}
+\vspace{0.2em}
+\begin{itemize}
+    \item Each network needs a \textbf{stable target}.
+    \item Otherwise, training becomes a moving-target problem.
+\end{itemize}
+\end{block}
+\vspace{0.2em}
+\centering
+\textit{Back-and-forth training makes the adversarial game learnable.}
 \end{frame}
 
-\begin{frame}{Minimax Objective}
-\[
-\min_G \max_D V(D,G)
-\]
+
+\begin{frame}{Convergence in GANs}
+
+\small
+
+\begin{block}{What happens during successful training?}
+\begin{itemize}
+    \item As $G$ improves, $D$ performance decreases.
+    \item If $G$ succeeds perfectly, $D$ accuracy $\approx 50\%$.
+\end{itemize}
+\end{block}
+
+\vspace{0.6em}
+
+\begin{block}{Why convergence is fragile}
+\begin{itemize}
+    \item Discriminator feedback becomes less informative.
+    \item Generator may start learning from noisy gradients.
+    \item Training too long can cause \textbf{mode collapse}.
+\end{itemize}
+\end{block}
+
+\vspace{0.4em}
+
+\begin{alertblock}{Important}
+For GANs, convergence is often \textit{fleeting}, not stable.
+\end{alertblock}
+
 \end{frame}
+
