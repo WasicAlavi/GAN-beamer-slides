@@ -1,7 +1,7 @@
 % ============================================================
-%  Section 5: Loss Functions & Failure Modes
+%  Section 5:Failure Modes (continued)
 % ============================================================
-\section{Loss Functions \& Failure Modes}
+\section{Failure Modes}
 % ── Colour guard (safe duplicate – only defines if not yet set) ──────────────
 \providecolor{cream}{RGB}{250,248,240}
 \providecolor{crimson}{RGB}{139,26,26}
@@ -10,102 +10,8 @@
 \providecolor{blockbg}{RGB}{242,236,224}
 
 
-\begin{frame}{Loss Functions in GANs}
+% ── Common failure modes start here ────────────────────────────────────────
 
-\small
-
-\textbf{Goal of a GAN}
-
-\begin{itemize}
-    \item Match the generated distribution $p_g$ 
-          to the real data distribution $p_{\text{data}}$.
-    \item Use a loss function that measures the
-          \textbf{distance between two distributions}.
-\end{itemize}
-
-\vspace{0.8em}
-
-\textbf{One Loss or Two?}
-
-\begin{itemize}
-    \item GANs use two training losses:
-          \begin{itemize}
-              \item Discriminator loss
-              \item Generator loss
-          \end{itemize}
-    \item Both come from a \textbf{single underlying objective}.
-    \item During generator training, only the term involving
-          fake data is optimized.
-\end{itemize}
-
-\vspace{0.5em}
-
-
-\end{frame}
-
-
-
-
-% ── Slide 1: Loss functions ────────────────────────────────────────────────
-\begin{frame}{Minimax Loss Function}
-
-\small
-
-\begin{block}{Original GAN Objective}
-\[
-\min_G \max_D 
-\left(
-\mathbb{E}_{x \sim p_{\text{data}}}[\log D(x)]
-+
-\mathbb{E}_{z \sim p_z}[\log(1 - D(G(z)))]
-\right)
-\]
-\end{block}
-
-\vspace{0.6em}
-
-\begin{itemize}
-    \item $\mathbb{E}_{x \sim p_{\text{data}}}[\log D(x)]$  
-          → Reward $D$ for correctly classifying real data.
-
-    \item $\mathbb{E}_{z \sim p_z}[\log(1 - D(G(z)))]$  
-          → Reward $D$ for correctly detecting fake data.
-
-    \item $D$ tries to \textbf{maximize} this objective.
-
-    \item $G$ tries to \textbf{minimize} it (fool $D$).
-\end{itemize}
-
-\end{frame}
-
-
-% ── Slide 2: Modified Minimax Loss ─────────────────────────────────────────
-
-\begin{frame}{Modified Minimax Loss}
-
-\small
-
-\begin{block}{Generator Objective (Modified)}
-\[
-\max_G \;
-\mathbb{E}_{z \sim p_z}[\log D(G(z))]
-\]
-\end{block}
-
-\vspace{0.6em}
-
-
-\begin{itemize}
-    \item Instead of minimizing $\log(1 - D(G(z)))$
-    \item $G$ maximizes $\log D(G(z))$
-    \item This provides \textbf{stronger gradients} early in training
-\end{itemize}
-
-\end{frame}
-
-
-
-% ── Slide 2: Common failure modes ─────────────────────────────────────────
 \begin{frame}{Common GAN Problem: Vanishing Gradients}
 
 \small
@@ -170,5 +76,3 @@
 \end{itemize}
 
 \end{frame}
-
-

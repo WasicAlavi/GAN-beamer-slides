@@ -1,5 +1,7 @@
+
+
 % ============================================================
-%  Section 4: Training
+%  Section 4: Training 
 % ============================================================
 \section{Training}
 % ── Colour guard (safe duplicate – only defines if not yet set) ──────────────
@@ -9,6 +11,27 @@
 \providecolor{lightcrimson}{RGB}{200,60,60}
 \providecolor{blockbg}{RGB}{242,236,224}
 
+% === NEW OUTLINE SLIDE ===
+
+\begin{frame}{Topics Covered}
+\small
+\textbf{In this section we will cover:}
+\vspace{0.5em}
+\begin{itemize}
+    \item GAN Training Challenges
+    \begin{itemize}
+        \item Alternating Training
+        \item Convergence in GANs
+    \end{itemize} \pause
+    \item Loss Functions in GANs
+    \begin{itemize}
+        \item Loss Functions overview
+        \item Minimax Loss 
+        \item Modified Minimax Loss
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
 
 \begin{frame}{Complications in GAN Training}
 \small
@@ -16,14 +39,14 @@
 \begin{block}{Why is GAN training difficult?}
 Because a GAN contains \textbf{two separately trained networks},
 its training must address two main complications:
-\end{block}
+\end{block} \pause
 
 \vspace{0.6em}
 
 \begin{itemize}
     \item GANs must juggle two different training processes:
-          \textbf{Generator} and \textbf{Discriminator}.
-    \item GAN convergence is difficult to identify and unstable.
+          \textbf{Generator} and \textbf{Discriminator}. \pause
+    \item GAN convergence is difficult to identify and unstable. \pause
 \end{itemize}
 
 \vspace{0.6em}
@@ -41,9 +64,9 @@ We are not optimizing one model — we are optimizing a
 
 \begin{block}{How GAN Training Works}
 \begin{enumerate}\setlength\itemsep{0.6em}
-    \item Train \textbf{Discriminator} (keep $G$ frozen)
-    \item Train \textbf{Generator} (keep $D$ frozen)
-    \item Repeat
+    \item Train \textbf{Discriminator} (keep $G$ frozen) \pause
+    \item Train \textbf{Generator} (keep $D$ frozen) \pause
+    \item Repeat \pause
 \end{enumerate}
 \vspace{0.2em}
 \begin{itemize}
@@ -66,7 +89,7 @@ We are not optimizing one model — we are optimizing a
     \item As $G$ improves, $D$ performance decreases.
     \item If $G$ succeeds perfectly, $D$ accuracy $\approx 50\%$.
 \end{itemize}
-\end{block}
+\end{block} \pause
 
 \vspace{0.6em}
 
@@ -86,3 +109,157 @@ For GANs, convergence is often \textit{fleeting}, not stable.
 
 \end{frame}
 
+
+% ============================================================
+%  Section 5: Loss Functions
+% ============================================================
+\section{Loss Functions}
+% ── Colour guard (safe duplicate – only defines if not yet set) ──────────────
+\providecolor{cream}{RGB}{250,248,240}
+\providecolor{crimson}{RGB}{139,26,26}
+\providecolor{darkfoot}{RGB}{60,60,60}
+\providecolor{lightcrimson}{RGB}{200,60,60}
+\providecolor{blockbg}{RGB}{242,236,224}
+
+
+\begin{frame}{Loss Functions in GANs}
+
+\small
+
+\textbf{Goal of a GAN:} \pause
+generate fake data indistinguishable from real data.
+\begin{itemize}
+    \item The Generator tries to create data that matches the real data distribution.
+    \item We need a way to measure "how close" the fakes are to the real thing.
+    \item This measurement is the loss function \textbf{distance between two distributions}. \pause
+\end{itemize}
+
+\vspace{0.8em}
+
+\textbf{One Loss or Two?} \pause
+
+\begin{itemize}
+    \item GANs use two training losses:
+          \begin{itemize}
+              \item Discriminator loss
+              \item Generator loss
+          \end{itemize} 
+    \item Both come from a \textbf{single underlying objective}.
+\end{itemize}
+
+\vspace{0.5em}
+\end{frame}
+
+
+
+
+% ── Slide 1.1: Loss functions ────────────────────────────────────────────────
+\begin{frame}{Minimax Loss Function}
+
+\small
+
+\begin{block}{Original GAN Objective}
+\[
+\min_G \max_D 
+\left(
+\mathbb{E}_{x \sim p_{\text{data}}}[\log D(x)]
++
+\mathbb{E}_{z \sim p_z}[\log(1 - D(G(z)))]
+\right)
+\]
+\end{block}
+
+\vspace{0.5em}
+
+\begin{itemize}
+    \item $x$ is a REAL image from the dataset. \pause
+    \item $D(x)$ is the Discriminator's confidence that this REAL image is fake or real (0 → 1). \pause
+    \item $\log D(x)$ is the logarithm of the Discriminator's output (\textit{negative → zero}). \pause
+    \item $\mathbb{E}_{x \sim p_{\text{data}}}[\log D(x)]$ represents the \textbf{Expected Value} (average) calculated over samples drawn from the real training data distribution.
+\end{itemize}
+
+\end{frame}
+
+% ── Slide 1.2: Loss functions ────────────────────────────────────────────────
+\begin{frame}{Minimax Loss Function}
+
+\small
+
+\begin{block}{Original GAN Objective}
+\[
+\min_G \max_D 
+\left(
+\mathbb{E}_{x \sim p_{\text{data}}}[\log D(x)]
++
+\mathbb{E}_{z \sim p_z}[\log(1 - D(G(z)))]
+\right)
+\]
+\end{block}
+\vspace{0.5em}
+
+\begin{itemize}
+    \setlength\itemsep{0em} % Tightens space between bullets
+    \item $z$ is a random noise And $G(z)$ is a fake image from the Generator. \pause
+    \item $D(G(z))$ is the Discriminator's confidence that this FAKE image is fake or real (0 → 1). \pause
+    \item $\log(1- D(G(z)))$ is the logarithm of the Discriminator's output (\textit{zero → negative}). \pause
+    \item $\mathbb{E}_{z \sim p_z}[\log(1 - D(G(z)))]$ represents the \textbf{Expected Value} (average) calculated over all the random noise samples fed into the Generator.
+\end{itemize}
+
+\end{frame}
+
+% ── Slide 1.3: Loss functions ────────────────────────────────────────────────
+\begin{frame}{Minimax Loss Function}
+
+\small
+
+\begin{block}{Original GAN Objective}
+\[
+\min_G \max_D 
+\left(
+\mathbb{E}_{x \sim p_{\text{data}}}[\log D(x)]
++
+\mathbb{E}_{z \sim p_z}[\log(1 - D(G(z)))]
+\right)
+\]
+\end{block}
+
+\vspace{0.6em}
+
+\begin{itemize}
+    \item $\mathbb{E}_{x \sim p_{\text{data}}}[\log D(x)]$  
+          → Reward $D$ for correctly classifying real data.
+
+    \item $\mathbb{E}_{z \sim p_z}[\log(1 - D(G(z)))]$  
+          → Reward $D$ for correctly detecting fake data. \pause
+
+    \item $D$ tries to \textbf{maximize} this objective.
+
+    \item $G$ tries to \textbf{minimize} it (fool $D$).
+\end{itemize}
+
+\end{frame}
+
+
+% ── Slide 2: Modified Minimax Loss ─────────────────────────────────────────
+
+\begin{frame}{Modified Minimax Loss}
+
+\small
+
+\begin{block}{Generator Objective (Modified)}
+\[
+\max_G \;
+\mathbb{E}_{z \sim p_z}[\log D(G(z))]
+\]
+\end{block} \pause
+
+\vspace{0.6em}
+
+
+\begin{itemize}
+    \item Instead of minimizing $\log(1 - D(G(z)))$ \pause
+    \item $G$ maximizes $\log D(G(z))$ \pause
+    \item This provides \textbf{stronger gradients} early in training
+\end{itemize}
+
+\end{frame}
